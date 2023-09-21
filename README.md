@@ -25,4 +25,36 @@ Structure of the data for the ship: (_ship name_,_class data_,_movement data_)
 ### Shooter Ship
 * _ship name_: 'shooter'
 * _class data_: 3-item tuple
-* - _mode_: '**r**' for random interval or '**f**' for fixed interval
+  - _mode_: '**r**' for random interval or '**f**' for fixed interval
+  - _param_: for **r**: shoot chance (1/x, default: 115), for **f**: interval in seconds
+  - _bullet speed_: speed of the bullet (px/update, default: 5)
+ 
+### Ram (Kamikaze) Ship
+* _ship name_: 'ram'
+* _class data_: 2-item tuple
+  - _mode_: **r**: random, **f**: fixed interval
+  - _param_: for **r**: ram chance, for **f**: interval
+* _movement data_: **mandatory**
+  - _axis_: **y**
+  - _distance_: **180** for top row, **140** for bottom row
+  - _px/update_: multiple of _distance_ (default: 12)
+  - _loop?_: **True**
+  - _wait_time_: time waiting before coming back up (in seconds)
+
+### Shield Ship
+* _ship name_: 'shield'
+* _class data_: 3-item tuple
+  - _shield chance_: chance to shield/update (deafult: 200)
+  - _shield time_: time of active shield (in seconds)
+  - _ships_: # of ships shielded (max 5 if in backrow)
+
+### Movement
+* any ship can move
+* last atribute in ship tuple _ship name_,_class data_,_movement data_)
+* _axis_: **x** or **y**
+* _distance_: distance covered in px, (Note: no ship colliding prevention!)
+* _px/update_: px per update, should be a mulitple of _distance_
+* _loop?_: **True** or **False**
+* __wait time_: time spent waiting before going back (if applicable) in seconds
+
+
