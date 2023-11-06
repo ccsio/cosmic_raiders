@@ -1,5 +1,5 @@
 from kandinsky import *
-from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE, KEY_OK
+from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE, KEY_OK, KEY_SHIFT
 from time import * 
 from random import randrange 
 black = color(0,0,0) 
@@ -465,12 +465,13 @@ def next_level(lvl):
     return lvl
 
 def show_tips():
-    draw_string("< > to move",105,85,black)
-    draw_string("EXE to shoot",100,105,black)
+    draw_string("< > to move",105,75,black)
+    draw_string("EXE to shoot",100,95,black)
+    draw_string("SHIFT to pause",90,115,black)
 
     while True:
         if keydown(KEY_RIGHT) or keydown(KEY_LEFT) or keydown(KEY_EXE):
-            fill_rect(0,80,320,50,white)
+            fill_rect(0,74,320,60,white)
             break
 
 def title_screen(text):
@@ -485,7 +486,7 @@ def title_screen(text):
         draw_string(i,int(160 - 5*len(i)),j,white,navy_blue)
 
     while True:
-        if keydown(KEY_OK):
+        if keydown(KEY_EXE):
             fill_rect(0,0,320,250,white)
             break
 
@@ -502,7 +503,14 @@ while True:
         player.move_hor(-1)
     if keydown(KEY_EXE):
         player.shoot()
-
+    elif keydown(KEY_SHIFT):
+        draw_string("shift to unpause",80,100,black)
+        sleep(0.2)
+        while True:
+            if keydown(KEY_SHIFT):
+                fill_rect(0,100,320,20,white)
+                break
+        sleep(0.2)
 
     for idx,i in enumerate(bullet_list):
         entity_hit = i.move(idx)
