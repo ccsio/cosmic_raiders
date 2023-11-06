@@ -1,5 +1,5 @@
 from kandinsky import *
-from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE, KEY_OK, KEY_SHIFT
+from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE, KEY_OK, KEY_ANS
 from time import * 
 from random import randrange 
 black = color(0,0,0) 
@@ -486,7 +486,7 @@ def title_screen(text):
         draw_string(i,int(160 - 5*len(i)),j,white,navy_blue)
 
     while True:
-        if keydown(KEY_EXE):
+        if keydown(KEY_OK):
             fill_rect(0,0,320,250,white)
             break
 
@@ -503,11 +503,11 @@ while True:
         player.move_hor(-1)
     if keydown(KEY_EXE):
         player.shoot()
-    elif keydown(KEY_SHIFT):
+    elif keydown(KEY_ANS):
         draw_string("shift to unpause",80,100,black)
         sleep(0.2)
         while True:
-            if keydown(KEY_SHIFT):
+            if keydown(KEY_ANS):
                 fill_rect(0,100,320,20,white)
                 break
         sleep(0.2)
