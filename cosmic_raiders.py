@@ -1,6 +1,6 @@
-from kandinsky import fill_rect as fr, color as c, draw_string as ds, get_pixel as gp, display
-from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE, KEY_OK, KEY_ANS
-from time import monotonic as mc, sleep as sp
+from kandinsky import fill_rect as fr,color as c,draw_string as ds,get_pixel as gp,display
+from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE,KEY_OK,KEY_ANS
+from time import monotonic as mc,sleep as sp
 from random import randrange 
 black = c(0,0,0) 
 white = c(248, 252, 248)
@@ -10,10 +10,8 @@ blue = c(30,10,211)
 green = c(30, 132, 73)
 lime = c(24,209,18)
 navy_blue = c(31,97,141)
-
 action_list, moving_list, bullet_list, enemy_list = [], [], [], []
 move_delay, fps_limit, action_delay = mc(), mc(), mc()
-
 basic = ("basic",None,None) 
 tank = ("tank",None,None)
 shooterR = ("shooter",("r",115,5),None)
@@ -23,33 +21,29 @@ ram1 = ("ram",("r",200),("y",180,12,True,1))
 ram2 = ("ram",("r",200),("y",144,12,True,1))
 shield = ("shield",(200,5,3),None)
 d = "dead"
-
 level = 0
 levels = ( 
-        (  (((d,)*8)), (d,basic,basic,d,d,basic,basic,d)),
-        (  (basic,basic,d,d,d,d,basic,basic), (basic,d,basic,basic,basic,basic,d,basic)),
-        (  (d,basic,basic,d,d,basic,basic,d), (basic,d,d,shooterR,shooterR,d,d,basic)),
-        (  (shooterR,basic,basic,d,d,basic,basic,shooterR), (d,d,basic,shooterR,shooterR,basic,d,d)),
-        (  (shooter5,basic,basic,shooterR,shooterR,basic,basic,shooter5), (basic,d,d,basic,basic,d,d,basic)),
-        (  (shooter3,shooterR,d,d,d,d,shooterR,shooter3), (basic,basic,basic,shooterR,shooterR,basic,basic,basic)),
-        (  (shooter5,d,basic,d,d,basic,d,shooter5), (basic,basic,d,tank,tank,d,basic,basic)),
-        (  (shooter5,basic,d,basic,basic,d,basic,shooter5), (tank,d,tank,shooterR,shooterR,tank,d,tank)),
-        (  (shooter3,basic,d,shooter5,shooter5,d,basic,shooter3), (tank,d,basic,tank,tank,basic,d,tank)),
-        (  (("shooter",("f",3,5),("x",84,4,True,1)),d,d,shooter3,shooter3,d,d,("shooter",("f",3,5),("x",84,-4,True,1))), (basic,basic,basic,tank,tank,basic,basic,basic)),\
-        
-        (  (("basic",None,("y",36,3,True,1)), ("shooter",("r",100,8),("x",42,3,True,1)), d,shooter3,shooter3,d,("shooter",("r",100,8),("x",42,-3,True,1)),("basic",None,("y",36,3,True,1))), (d,d,tank,basic,basic,tank,d,d)),
-        (  (ram1,basic,basic,shooter3,shooter3,basic,basic,ram1), (d,basic,d,tank,tank,d,basic,d)),
-        (  (d,shooter5,shooterR,basic,basic,shooterR,shooter5,d), (ram2,tank,basic,ram2,ram2,basic,tank,ram2)),
-        (  (ram1,shooter3,d,shooterR,shooterR,d,shooter3,ram1), (d,tank,ram2,tank,d,ram2,tank,d)),
-        (  (ram1,basic,shooterR,shooterR,shooterR,shooterR,basic,ram1), (d,ram2,tank,basic,basic,tank,ram2,d)),
-        (  (shooter5,shield,shooter3,basic,basic,shooter3,shield,shooter5), (tank,basic,tank,d,d,tank,basic,tank)),
-        (  (shield,shooter5,basic,ram1,ram1,basic,shooter5,shield), ((("shooter",("f",3,5),("x",84,4,True,1))),d,d,d,d,d,d,(("shooter",("f",3,5),("x",84,-4,True,1))))),
-        (  (basic,shield,shooter3,shield,shooterR,shooter3,shield,basic), (ram2,tank,shooter5,tank,ram2,shooter5,tank,ram2)),
-        (  (shield,shooter3,("shooter",("r",100,10),None),d,shield,("shooter",("r",100,10),None),shooter3,shield), (ram2,tank,tank,ram2,ram2,tank,tank,ram2)),
-        (  (shooterR,("shooter",("f",2,8),None),("shield",(180,4,4),None),("ram",("r",150),("y",180,18,True,1)),("ram",("r",150),("y",180,18,True,1)),("shield",(180,4,4),None),("shooter",("f",2,8),None),shooterR), (basic,tank,shooter5,d,d,shooter5,tank,basic)),
+(  (((d,)*8)), (d,basic,basic,d,d,basic,basic,d)),
+(  (basic,basic,d,d,d,d,basic,basic), (basic,d,basic,basic,basic,basic,d,basic)),
+(  (d,basic,basic,d,d,basic,basic,d), (basic,d,d,shooterR,shooterR,d,d,basic)),
+(  (shooterR,basic,basic,d,d,basic,basic,shooterR), (d,d,basic,shooterR,shooterR,basic,d,d)),
+(  (shooter5,basic,basic,shooterR,shooterR,basic,basic,shooter5), (basic,d,d,basic,basic,d,d,basic)),
+(  (shooter3,shooterR,d,d,d,d,shooterR,shooter3), (basic,basic,basic,shooterR,shooterR,basic,basic,basic)),
+(  (shooter5,d,basic,d,d,basic,d,shooter5), (basic,basic,d,tank,tank,d,basic,basic)),
+(  (shooter5,basic,d,basic,basic,d,basic,shooter5), (tank,d,tank,shooterR,shooterR,tank,d,tank)),
+(  (shooter3,basic,d,shooter5,shooter5,d,basic,shooter3), (tank,d,basic,tank,tank,basic,d,tank)),
+(  (("shooter",("f",3,5),("x",84,4,True,1)),d,d,shooter3,shooter3,d,d,("shooter",("f",3,5),("x",84,-4,True,1))), (basic,basic,basic,tank,tank,basic,basic,basic)),\
+(  (("basic",None,("y",36,3,True,1)), ("shooter",("r",100,8),("x",42,3,True,1)), d,shooter3,shooter3,d,("shooter",("r",100,8),("x",42,-3,True,1)),("basic",None,("y",36,3,True,1))), (d,d,tank,basic,basic,tank,d,d)),
+(  (ram1,basic,basic,shooter3,shooter3,basic,basic,ram1), (d,basic,d,tank,tank,d,basic,d)),
+(  (d,shooter5,shooterR,basic,basic,shooterR,shooter5,d), (ram2,tank,basic,ram2,ram2,basic,tank,ram2)),
+(  (ram1,shooter3,d,shooterR,shooterR,d,shooter3,ram1), (d,tank,ram2,tank,d,ram2,tank,d)),
+(  (ram1,basic,shooterR,shooterR,shooterR,shooterR,basic,ram1), (d,ram2,tank,basic,basic,tank,ram2,d)),
+(  (shooter5,shield,shooter3,basic,basic,shooter3,shield,shooter5), (tank,basic,tank,d,d,tank,basic,tank)),
+(  (shield,shooter5,basic,ram1,ram1,basic,shooter5,shield), ((("shooter",("f",3,5),("x",84,4,True,1))),d,d,d,d,d,d,(("shooter",("f",3,5),("x",84,-4,True,1))))),
+(  (basic,shield,shooter3,shield,shooterR,shooter3,shield,basic), (ram2,tank,shooter5,tank,ram2,shooter5,tank,ram2)),
+(  (shield,shooter3,("shooter",("r",100,10),None),d,shield,("shooter",("r",100,10),None),shooter3,shield), (ram2,tank,tank,ram2,ram2,tank,tank,ram2)),
+(  (shooterR,("shooter",("f",2,8),None),("shield",(180,4,4),None),("ram",("r",150),("y",180,18,True,1)),("ram",("r",150),("y",180,18,True,1)),("shield",(180,4,4),None),("shooter",("f",2,8),None),shooterR), (basic,tank,shooter5,d,d,shooter5,tank,basic)),
 )
-
-
 def enemy_textures(x,y,col,bg=white):
     fr(x+2,y,4,2,black)
     fr(x+28,y,4,2,black)
@@ -76,7 +70,6 @@ def enemy_textures(x,y,col,bg=white):
     fr(x+18,y+18,2,6,col)
     fr(x+16,y+24,2,4,col)
 
-
 class Bullet:
     def __init__(self,x,y,dir,speed,color=red):
         self.pos_x = x
@@ -97,19 +90,16 @@ class PlayerBullet(Bullet):
         if self.pos_y < 6:
             self.delete_bullet(xx)
             return
-        
         elif gp(self.pos_x,self.pos_y-6) != white and self.pos_y < 70:
             for idx,i in reversed(list(enumerate(enemy_list))):
                 if i == "dead":
                     continue
-
                 elif i.pos_x <= self.pos_x <= i.pos_x + 34:
                     self.delete_bullet(xx)
                     if i.is_shielded:
                         i._draw_shield()
                         return
                     return idx
-           
         fr(self.pos_x,self.pos_y,self.size[0],self.size[1],white)
         self.pos_y += self.dir*self.speed
         fr(self.pos_x,self.pos_y,self.size[0],self.size[1],self.col)
@@ -122,7 +112,6 @@ class EnemyBullet(Bullet):
             else:
                 self.pos_y += self.dir*self.speed
             return
-
         elif self.pos_y > 210:
             self.delete_bullet(xx)
             return
@@ -136,11 +125,9 @@ class EnemyBullet(Bullet):
                     enemy_list[idx].load_texture()
                     self.hidden = True
                     return
-
         elif gp(self.pos_x,self.pos_y+6) != white:
             self.delete_bullet(xx)
             return "player_hit"
-
         fr(self.pos_x,self.pos_y,self.size[0],self.size[1],white)
         self.pos_y += self.dir*self.speed
         fr(self.pos_x,self.pos_y,self.size[0],self.size[1],self.col)
@@ -228,7 +215,6 @@ class Enemy(SpaceShip):
             self.total_distance = move_dat[1]
             self.px_update = move_dat[2]
             self.rounds = abs(self.total_distance/self.px_update)
-
             self.loop = move_dat[3]
             self.wait_time = move_dat[4]
             self.delay = 0
@@ -263,7 +249,6 @@ class Enemy(SpaceShip):
         else:
             self._move_y()
         self.rounds -= 1
-
         if self.rounds == 0:
             if not self.loop:
                 return True
@@ -333,27 +318,21 @@ class RammingShip(Enemy):
     def ram(self):
         if mc() - self.delay < self.wait_time:
             return
-        
         elif player.pos_x +34 >= self.pos_x and player.pos_x < self.pos_x +34 and self.dir == 1 and self.pos_y > 130:
             if player.hit():
                 player.player_died()
-            
             else:
                 fr(self.pos_x,self.pos_y,self.size,self.size,white)
                 self.pos_y = 147
                 self.load_texture()
-
                 self.dir *= -1
                 self.rounds = self.total_distance/ self.px_update -3
                 self.delay = mc()
-
         elif self.total_distance / self.px_update < self.rounds:
             self.rounds -= 1
             return
-        
         self._move_y(lime)
         self.rounds -= 1
-
         if self.rounds == 0:
             self.dir *= -1
             self.rounds = self.total_distance / self.px_update + 10
@@ -421,7 +400,6 @@ class ShieldingShip(Enemy):
         elif randrange(self.shield_chance) == 1 and not self.is_shielded:
             self.activate_shield(idx)
 
-
 def place_enemies(data):
     for i in range(2):
         if len(data[i]) == 0:
@@ -469,7 +447,6 @@ def show_tips():
     ds("< > to move",105,75,black)
     ds("EXE to shoot",100,95,black)
     ds("SHIFT to pause",90,115,black)
-
     while True:
         if keydown(KEY_RIGHT) or keydown(KEY_LEFT) or keydown(KEY_EXE):
             fr(0,74,320,60,white)
@@ -485,7 +462,6 @@ def title_screen(text):
     fr(49,120,2,6,red)
     for i,j in zip(text,(85,105,150)):
         ds(i,int(160 - 5*len(i)),j,white,navy_blue)
-
     while True:
         if keydown(KEY_OK):
             fr(0,0,320,250,white)
@@ -533,17 +509,14 @@ while True:
                         title_screen(("Congratualtions!","You won!"))
                     level = next_level(level)
                     action_delay = mc()
-
     if mc() - action_delay > 1:
         for i in action_list:
             i.action(enemy_list.index(i))
-
     if mc()-move_delay > 0.10:
         for i in moving_list:
             if i.move():
                 moving_list.remove(i)
         move_delay = mc()
-
     if mc() - fps_limit > 0.05:
         pass
     else:
