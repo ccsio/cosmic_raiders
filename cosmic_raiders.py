@@ -1,5 +1,5 @@
 from kandinsky import fill_rect as fr,color as c,draw_string as ds,get_pixel as gp,display
-from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE,KEY_OK,KEY_ANS
+from ion import keydown,KEY_RIGHT,KEY_LEFT,KEY_EXE,KEY_OK,KEY_ANS, KEY_BACKSPACE
 from time import monotonic as mc,sleep as sp
 from random import randrange 
 black = c(0,0,0) 
@@ -446,7 +446,7 @@ def next_level(lvl):
 def show_tips():
     ds("< > to move",105,75,black)
     ds("EXE to shoot",100,95,black)
-    ds("SHIFT to pause",90,115,black)
+    ds("ANS to pause",100,115,black)
     while True:
         if keydown(KEY_RIGHT) or keydown(KEY_LEFT) or keydown(KEY_EXE):
             fr(0,74,320,60,white)
@@ -481,7 +481,7 @@ while True:
     if keydown(KEY_EXE):
         player.shoot()
     elif keydown(KEY_ANS):
-        ds("shift to unpause",80,100,black)
+        ds("ANS to unpause",90,100,black)
         sp(0.2)
         while True:
             if keydown(KEY_ANS):
